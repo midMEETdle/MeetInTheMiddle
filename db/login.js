@@ -7,7 +7,7 @@ request(USER REQUEST ROUTE, (err, resp) => {
   let userData = JSON.parse(resp.body);
   databaseOps.createUser(userData);
 });
-
+//create Address
 request(ADDRESS REQ ROUTE, (err, resp) => {
   let addressData = JSON.parse(resp.body);
   databaseOps.createAddress(addressData);
