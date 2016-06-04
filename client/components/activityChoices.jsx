@@ -5,10 +5,12 @@ var ActivityChoice = React.createClass({
 
   render: function () {
     return (
-      <label className="activities">
-        <input type="checkbox" />
-        <span className="label-body" value={this.props.activity}>{this.props.activity}</span>
-      </label>
+      <div className="three columns">
+        <label className="activities">
+          <input name="activityBox" type="checkbox" value={this.props.activity} />
+          <span className="label-body">{this.props.activity}</span>
+        </label>
+      </div>
     );
   },
 
