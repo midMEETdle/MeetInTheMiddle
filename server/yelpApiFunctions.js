@@ -33,9 +33,9 @@ yelpApiFunctions.generateUrl = function(req, res, next) {
 };
 
 yelpApiFunctions.queryLocationData = function(req, res, next) {
-	request(req.body.requestUrl, function (error, response, body) {
-		console.log(body);
-	})
+  request(req.body.requestUrl, function (error, response, body) {
+    console.log(body);
+  })
 };
 
 yelpApiFunctions.parseLocationData = function(req, res, next) {
