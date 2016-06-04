@@ -4,6 +4,7 @@ const ReactDom = require('react-dom');
 const ActivityChoice = require('./activityChoices.jsx');
 const AddressForm = require('./addressForm.jsx');
 const MapResults = require('./map.jsx');
+const Login = require('./loginPage.jsx');
 const $ = require('jquery');
 
 var App = React.createClass({
@@ -11,6 +12,8 @@ var App = React.createClass({
   getInitialState: function () {
     return ({
       numberOfPeople: 2,
+      currentPage: 'loginPage',
+      resultsData: '',
       // TODO: Add state properties
     });
   },
@@ -39,8 +42,9 @@ var App = React.createClass({
   },
 
   formData: function() {
+    // submiting ALL form data not just first one
     let formDataArray = [];
-    for (let i = 1; i < this.state.numberOfPeople; i++) {
+    for (let i = 0; i < this.state.numberOfPeople; i++) {
       var friendId = 'form #friend' + i;
       var streetId = 'form #street' + i;
       var cityId = 'form #city' + i;
@@ -65,7 +69,8 @@ var App = React.createClass({
   },
 
   submitInputData: function () {
-    let addressFormData = this.formData();
+    let addressFormData = { inputArray: this.formData() };
+    console.log(addressFormData);
     let checkedActivities = this.activityData();
     // Only posting addressFormData for now
     $.ajax({
@@ -73,27 +78,53 @@ var App = React.createClass({
       url: 'http://localhost:3000/meet',
       data: addressFormData,
       success: function (response) {
-        // SET STATE WITH RECIEVED DATA
+        // set state with resultsdata property
+        // let result = JSON.parse(response);
+        // this.setState({
+        //   resultsData: result,
+        //   currentPage: 'resultsPage',
+        // });
       },
     });
   },
 
+  logInUser: function (e) {
+    e.preventDefault();
+    this.setState({ currentPage: 'addressesPage'});
+  },
+
   render: function () {
 
-    // Friend address input intial render....
-    var formFields = this.addForms();
-    var activityCheckboxes = this.addActivities();
-    return (
-      <div>
-        {formFields}
-        <button className="button-primary" onClick={this.addSingleForm}>Add Address</button>
-        <h4>Where do you want to meet?</h4>
-        <div className="row">
-          {activityCheckboxes}
+    if (this.state.currentPage === 'addressesPage') {
+      var formFields = this.addForms();
+      var activityCheckboxes = this.addActivities();
+      return (
+        <div>
+          {formFields}
+          <button className="button-primary" onClick={this.addSingleForm}>Add Address</button>
+          <h4>Where do you want to meet?</h4>
+          <div className="row">
+            {activityCheckboxes}
+          </div>
+          <button className="button-primary" onClick={this.submitInputData}>Meet in the middle!</button>
         </div>
-        <button className="button-primary" onClick={this.submitInputData}>Meet in the middle!</button>
-      </div>
-    );
+      );
+    }
+
+    if (this.state.currentPage === 'resultsPage') {
+      return (
+        <MapResults />
+      );
+    }
+
+    if (this.state.currentPage === 'loginPage') {
+      return (
+        <div>
+          <Login />
+          <button className="button-primary" onClick={this.logInUser}>Log In</button>
+        </div>
+      );
+    }
   },
 
 });
