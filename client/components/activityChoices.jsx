@@ -1,17 +1,17 @@
 'use strict';
 const React = require('react');
 
-var ActivityChoices = React.createClass({
+var ActivityChoice = React.createClass({
 
   render: function () {
     return (
       <label className="activities">
         <input type="checkbox" />
-        <span className="label-body">{this.props.activity}</span>
+        <span className="label-body" value={this.props.activity}>{this.props.activity}</span>
       </label>
     );
   },
 
 });
 
-module.exports = ActivityChoices;
+module.exports = ActivityChoice;
