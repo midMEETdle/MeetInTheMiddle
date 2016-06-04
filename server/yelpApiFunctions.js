@@ -1,17 +1,20 @@
 'use strict'
 
-const oauthSignature = require('oauth-signature');  
-const n = require('nonce')();  
-const request = require('request');  
-const qs = require('querystring');  
+const oauthSignature = require('oauth-signature');
+const n = require('nonce')();
+const request = require('request');
+const qs = require('querystring');
+const privateKeys = require('./../privateKeys');
 
 let yelpApiFunctions = {};
 
+//function gnerates oauthsignature and query string for yelp api
+//hard coded to restaurants right now
 yelpApiFunctions.generateUrl = function(req, res, next) {
   const baseUrl = 'http://api.yelp.com/v2/search';
-  const consumerKey = 'UcGPUiFVuLqi_AOLRTN64g', consumerSecret = 'xXOHH4FJASOoec9zqf4YdTVDGs0';
-  const token = '-JG-i85Cv1GvEmPM7ph1CO73wuO2QB3c', tokenSecret = '1cu_V0MR0Q0pD1DIKPc3opm5RZ0';
-    
+  const consumerKey = privateKeys.consumerKey, consumerSecret = privateKeys.consumerSecret;
+  const token = privateKeys.token, tokenSecret = privateKeys.tokenSecret;
+
   let parameters = {
     location: req.body.city,
     cll: req.body.averageLocation[0] + ',' + req.body.averageLocation[1],
@@ -19,6 +22,7 @@ yelpApiFunctions.generateUrl = function(req, res, next) {
     sort: '0',
     category_filter: 'restaurants',
   };
+  //console.log(parameters);
 
   parameters.oauth_consumer_key = consumerKey;
   parameters.oauth_token = token;
@@ -33,11 +37,13 @@ yelpApiFunctions.generateUrl = function(req, res, next) {
   next();
 };
 
+//queries yelp api for location data and slices 10 results
 yelpApiFunctions.queryLocationData = function(req, res, next) {
   request(req.body.requestUrl, function (error, response, body) {
     const data = JSON.parse(body);
     const RESULTS = 10;
     req.body.businessArray = data.businesses.slice(0, RESULTS);
+    console.log(req.body.businessArray);
     next();
   })
 };
