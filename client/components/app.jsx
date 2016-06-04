@@ -78,13 +78,13 @@ var App = React.createClass({
       url: 'http://localhost:3000/meet',
       data: addressFormData,
       success: function (response) {
-        // set state with resultsdata property
-        // let result = JSON.parse(response);
-        // this.setState({
-        //   resultsData: result,
-        //   currentPage: 'resultsPage',
-        // });
-      },
+        console.log(response);
+        let result = response;
+        this.setState({
+          resultsData: result,
+          currentPage: 'resultsPage',
+        });
+      }.bind(this),
     });
   },
 
@@ -113,7 +113,7 @@ var App = React.createClass({
 
     if (this.state.currentPage === 'resultsPage') {
       return (
-        <MapResults />
+        <MapResults data={this.state.resultsData} />
       );
     }
 
