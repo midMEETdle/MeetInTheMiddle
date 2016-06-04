@@ -11,13 +11,13 @@ yelpApiFunctions.generateUrl = function(req, res, next) {
   const baseUrl = 'http://api.yelp.com/v2/search';
   const consumerKey = 'UcGPUiFVuLqi_AOLRTN64g', consumerSecret = 'xXOHH4FJASOoec9zqf4YdTVDGs0';
   const token = '-JG-i85Cv1GvEmPM7ph1CO73wuO2QB3c', tokenSecret = '1cu_V0MR0Q0pD1DIKPc3opm5RZ0';
-  
-  console.log('city is ' + req.body.city);
-  
+    
   let parameters = {
     location: req.body.city,
-    cll: req.body.centralCoordinates.lat + ',' + req.body.centralCoordinates.lng,
-    sort: '2'
+    cll: req.body.averageLocation[0] + ',' + req.body.averageLocation[1],
+    //For sort: 0 is best match (default), 1 is distance, 2 is higest rated
+    sort: '0',
+    category_filter: 'restaurants',
   };
 
   parameters.oauth_consumer_key = consumerKey;
@@ -35,13 +35,11 @@ yelpApiFunctions.generateUrl = function(req, res, next) {
 
 yelpApiFunctions.queryLocationData = function(req, res, next) {
   request(req.body.requestUrl, function (error, response, body) {
-    console.log(body);
-    res.send(body);
+    const data = JSON.parse(body);
+    const RESULTS = 10;
+    req.body.businessArray = data.businesses.slice(0, RESULTS);
     next();
   })
-};
-
-yelpApiFunctions.parseLocationData = function(req, res, next) {
 };
 
 module.exports = yelpApiFunctions;

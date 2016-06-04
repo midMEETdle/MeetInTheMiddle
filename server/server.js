@@ -13,20 +13,21 @@ const yelpApiFunctions = require('./yelpApiFunctions');
 
 let app = express();
 
-// app.use(express.static(__dirname + './../client/')); 
+app.use(express.static(__dirname + './../client/')); 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
-app.use(dataHandler.addDummyData, dataHandler.parseInput, googleApiFunctions.getCoordinates,
-		googleApiFunctions.findCentralLocation, yelpApiFunctions.generateUrl, yelpApiFunctions.queryLocationData);
 
 app.get('/', function (req, res) {
-	console.log('hello world');
-	res.send('hello, client!');
+	res.sendFile(path.resolve('./index.html'));
 });
+
+app.post('/meet', dataHandler.parseInput, googleApiFunctions.getCoordinates,
+		googleApiFunctions.findCentralLocation, yelpApiFunctions.generateUrl, 
+		yelpApiFunctions.queryLocationData, dataHandler.sendOutput);
 
 app.listen(3000);
 
