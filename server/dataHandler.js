@@ -1,25 +1,30 @@
+'use strict'
 
 let dataHandler = {};
 
 dataHandler.parseInput = function(req, res, next) {
 	const googleApiKey = 'AIzaSyB9KfyHTrjZoOk7EiRzRFGqYvruh4hm6iY';
-	let url = 'https://maps.googleapis.com/maps/api/geocode/json?address=';
+	let baseUrl = 'https://maps.googleapis.com/maps/api/geocode/json?address=';
+	let urlArray = [];
 
 	for (let key in req.body) {
+		var url = baseUrl;
 		for (let key2 in req.body[key]) {
 			url += req.body[key][key2].replace(' ', '+');
 		}
+		url += '&key' + googleApiKey;
+		urlArray.push(url);
 	}
-	url += '&key' + googleApiKey;
 
-	req.body.inputUrl = url;
+	req.body.inputUrlArray = urlArray;
 	next(); 
 };
 
-dataHandler.findCentralLocation = function(req, res, next) {
-};
+// dataHandler.findCentralLocation = function(req, res, next) {
+// };
 
 dataHandler.addDummyData = function (req, res, next) {
+	console.log('inside dummy data');
 	req.body = {};
 	req.body = {
 		address1: {
@@ -33,6 +38,7 @@ dataHandler.addDummyData = function (req, res, next) {
 			state: ' CA',
 		}
 	}
-}
+	next();
+};
 
 module.exports = dataHandler;
