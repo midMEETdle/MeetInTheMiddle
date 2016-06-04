@@ -27,7 +27,7 @@ function scripts() {
       .on('error', function(err) {
         console.log('Error with compiling components', err.message);
       })
-      .pipe(source('bundle.js'))
+      .pipe(source('./client/bundle.js'))
       .pipe(gulp.dest('./'));
       console.log('Updated!', (Date.now() - updateStart) + 'ms');
     })
@@ -36,7 +36,7 @@ function scripts() {
     .on('error', function(err) {
       console.log('Error with compiling components', err.message);
     })
-    .pipe(source('bundle.js'))
+    .pipe(source('/client/bundle.js'))
     .pipe(gulp.dest('./'));
 }
 
