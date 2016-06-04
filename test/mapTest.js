@@ -11,8 +11,9 @@ describe ('React Unit Tests: Map', () => {
   let tree,instance,vdom;
   beforeEach(function () {
     tree = sd.shallowRender(
-      <Map locations = [{lat: 34, lng: 35}] center = {lat: 34.1, lng: 35.1} />
+      <Map locations ='[{lat: 34, lng: 35}]' center = '{lat: 34.1, lng: 35.1}' />
     );
+  });
 
     // instance = tree.getMountedInstance();
     // vdom = tree.getRenderOutput();
@@ -22,4 +23,4 @@ describe ('React Unit Tests: Map', () => {
     expect(tree.type).toEqual('div');
     expect(tree.props.id).toEqual('mapid');
   });
-}
+});
