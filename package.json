@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Swimkitch92/MeetInTheMiddle.git"
+    "url": "git+https://github.com/midMEETdle/MeetInTheMiddle"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Swimkitch92/MeetInTheMiddle/issues"
+    "url": "https://github.com/midMEETdle/MeetInTheMiddle"
   },
-  "homepage": "https://github.com/Swimkitch92/MeetInTheMiddle#readme",
+  "homepage": "https://github.com/midMEETdle/MeetInTheMiddle",
   "dependencies": {
     "babel-preset-es2015": "^6.9.0",
     "babel-preset-react": "^6.5.0",
