@@ -1,4 +1,4 @@
-// Here we will be unit testing the 3 database functions from server/db/games.js
+//We are testing the creation and completion of users and addresses tables in the database
 const db = require('../db/database.js');
 const fs = require('fs');
 const path = require('path');
