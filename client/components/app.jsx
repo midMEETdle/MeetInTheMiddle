@@ -1,9 +1,10 @@
 'use strict';
 const React = require('react');
 const ReactDom = require('react-dom');
-const ActivityChoice = require('./activityChoices');
-const AddressForm = require('./addressForm');
-const MapResults = require('./map');
+const ActivityChoice = require('./activityChoices.jsx');
+const AddressForm = require('./addressForm.jsx');
+const MapResults = require('./map.jsx');
+const $ = require('jquery');
 
 var App = React.createClass({
 
@@ -14,10 +15,7 @@ var App = React.createClass({
     });
   },
 
-  addForm: function (e) {
-    // Will form content that was filled out before the button click be erased?
-    // Set state with new number of people
-    e.preventDefault();
+  addForms: function () {
     let formArray = [];
     for (let i = 0; i < this.state.numberOfPeople; i++) {
       formArray.push(<AddressForm id={i} />);
@@ -25,31 +23,76 @@ var App = React.createClass({
     return formArray;
   },
 
+  addSingleForm: function (e) {
+    e.preventDefault();
+    const people = this.state.numberOfPeople + 1;
+    this.setState({ numberOfPeople: people });
+  },
+
   addActivities: function () {
-    const activityTypes = ['Restaurants', 'Parks', 'Movie Theaters', 'Malls'];
+    const activityTypes = ['Restaurant', 'Park', 'Movie Theater', 'Mall'];
     let activitiesArray = [];
-    for (let i = 0, len = activitiesTypes.length; i < len; i++) {
+    for (let i = 0, len = activityTypes.length; i < len; i++) {
       activitiesArray.push(<ActivityChoice activity={activityTypes[i]} />);
     }
     return activitiesArray;
   },
 
+  formData: function() {
+    let formDataArray = [];
+    for (let i = 1; i < this.state.numberOfPeople; i++) {
+      var friendId = 'form #friend' + i;
+      var streetId = 'form #street' + i;
+      var cityId = 'form #city' + i;
+      var stateId = 'form #state' + i;
+      let personData = {};
+      personData.name = $(friendId).val();
+      personData.street = $(streetId).val();
+      personData.city = $(cityId).val();
+      personData.state = $(stateId).val();
+      formDataArray.push(personData);
+    }
+    return formDataArray;
+  },
+
+  activityData: function () {
+    let checkedBoxes = $('input[name="activityBox"]:checked');
+    var checkedBoxesValues = [];
+    for (var i = 0; i < checkedBoxes.length; i++) {
+      checkedBoxesValues.push(checkedBoxes[i].value);
+    }
+    return checkedBoxesValues;
+  },
+
   submitInputData: function () {
-    // Grab form data
-    // Grab checkboxes
+    let addressFormData = this.formData();
+    let checkedActivities = this.activityData();
+    // Only posting addressFormData for now
+    $.ajax({
+      type: 'POST',
+      url: 'http://localhost:3000/meet',
+      data: addressFormData,
+      success: function (response) {
+        // SET STATE WITH RECIEVED DATA
+      },
+    });
   },
 
   render: function () {
 
     // Friend address input intial render....
-    var formFields = this.addForm();
+    var formFields = this.addForms();
     var activityCheckboxes = this.addActivities();
     return (
-      {formFields}
-      <button className="button-primary" onClick={this.addForm}>Add Address</button>
-      <p>Find...</p>
-      {activityCheckboxes}
-      <button className="button-primary" onClick={this.submitInputData}>Meet in the middle!</button>
+      <div>
+        {formFields}
+        <button className="button-primary" onClick={this.addSingleForm}>Add Address</button>
+        <h4>Where do you want to meet?</h4>
+        <div className="row">
+          {activityCheckboxes}
+        </div>
+        <button className="button-primary" onClick={this.submitInputData}>Meet in the middle!</button>
+      </div>
     );
   },
 

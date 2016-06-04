@@ -8,7 +8,6 @@ const sequelize = new Sequelize('postgres://usewxxncwyaejx:tZJCuwYOCU0QArl3JUv9_
   dialect: 'postgres',
 });
 
-//need to have seperate user and address data
 const databaseOps = {
 
   createUser: (userData) => {
@@ -23,17 +22,18 @@ const databaseOps = {
       username: {type: Sequelize.STRING},
       password: {type: Sequelize.STRING},
     });
+    //establish connection with database and prepare to add new user
     let usersTablePromise = Users.sync({ logging: console.log, force: true });
     usersTablePromise.then(() => {
-    	Users.bulkCreate(parseUserData(data));
+    	Users.create(userData);
     });
-    function parseUserData(userData) {
-      let parsedUserData = {};
-      for (let trait in userData){
-        parseUserData[trait] = userData[trait];
-      }
-      return parsedUserData;
-    }
+    // function parseUserData(userData) {
+    //   let parsedUserData = {};
+    //   for (let trait in userData){
+    //     parseUserData[trait] = userData[trait];
+    //   }
+    //   return parsedUserData;
+    // }
   },
 
   createAddress: (addressData) => {
@@ -48,19 +48,19 @@ const databaseOps = {
       state: {type: Sequelize.STRING},
       name: {type: Sequelize.STRING},
     });
-
+    //set up that one user can have multiple addresses
     Addresses.belongsTo(Users);
-
+    //establish connection with database and prepare to add new addresses
     let addressesTablePromise = Addresses.sync({ logging: console.log, force: true });
 
     addressesTablePromise.then(() => {
-      Addresses.bulkCreate(data);
+      Addresses.bulkCreate(addressData);
     });
+  },
 };
 
-
-
 module.exports = databaseOps;
+
 // function parseAddressData(addressData) {
 // 	let parsedAddressData = {};
 //   for (let trait in addressesData){
