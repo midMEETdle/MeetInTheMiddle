@@ -15,10 +15,10 @@ describe('React unit tests: AddressForm', () => {
     tree = sd.shallowRender(<AddressForm id="1" />);
   });
 
-  instance = tree.getMountedInstance();
-  vdom = tree.getRenderOutput();
+  // instance = tree.getMountedInstance();
+  // vdom = tree.getRenderOutput();
 
   it('Renders a form', () => {
-    expect(vdom.type).toEqual('form');
+    expect(tree.type).toEqual('form');
   });
 });
