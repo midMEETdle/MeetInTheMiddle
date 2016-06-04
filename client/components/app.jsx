@@ -4,6 +4,7 @@ const ReactDom = require('react-dom');
 const ActivityChoice = require('./activityChoices.jsx');
 const AddressForm = require('./addressForm.jsx');
 const MapResults = require('./map.jsx');
+const ResultList = require('./resultListItem.jsx');
 const Login = require('./loginPage.jsx');
 const $ = require('jquery');
 
@@ -14,7 +15,7 @@ var App = React.createClass({
       numberOfPeople: 2,
       currentPage: 'loginPage',
       resultsData: '',
-      // TODO: Add state properties
+      firstName: '',
     });
   },
 
@@ -70,7 +71,6 @@ var App = React.createClass({
 
   submitInputData: function () {
     let addressFormData = { inputArray: this.formData() };
-    console.log(addressFormData);
     let checkedActivities = this.activityData();
     // Only posting addressFormData for now
     $.ajax({
@@ -78,19 +78,44 @@ var App = React.createClass({
       url: 'http://localhost:3000/meet',
       data: addressFormData,
       success: function (response) {
-        // set state with resultsdata property
-        // let result = JSON.parse(response);
-        // this.setState({
-        //   resultsData: result,
-        //   currentPage: 'resultsPage',
-        // });
-      },
+        console.log(response);
+        let result = response;
+        this.setState({
+          resultsData: result,
+          currentPage: 'resultsPage',
+        });
+      }.bind(this),
     });
   },
 
-  logInUser: function (e) {
-    e.preventDefault();
-    this.setState({ currentPage: 'addressesPage'});
+  userData: function() {
+    var firstNameId = 'form #firstName';
+    var lastNameId = 'form #lastName';
+    var usernameId = 'form #username';
+    var passwordId = 'form #password';
+    let userData = {};
+    userData.firstname = $(firstNameId).val();
+    userData.lastname = $(lastNameId).val();
+    userData.username = $(usernameId).val();
+    userData.password = $(passwordId).val();
+    return userData;
+  },
+
+  logInUser: function () {
+    var userDataObj = { userData: this.userData() };
+    console.log(userDataObj);
+    $.ajax({
+      type: 'POST',
+      url: 'http://localhost:3000/createuser',
+      data: userDataObj,
+      success: function (response) {
+        console.log('successful create user');
+        this.setState({
+          firstName: response.firstname,
+          currentPage: 'addressesPage',
+        });
+      }.bind(this),
+    });
   },
 
   render: function () {
@@ -113,7 +138,11 @@ var App = React.createClass({
 
     if (this.state.currentPage === 'resultsPage') {
       return (
-        <MapResults />
+        <div>
+          <p>Hi {this.state.firstName}!</p>
+          <MapResults data={this.state.resultsData} />
+          <ResultList data={this.state.resultsData} />
+        </div>
       );
     }
 
@@ -121,7 +150,7 @@ var App = React.createClass({
       return (
         <div>
           <Login />
-          <button className="button-primary" onClick={this.logInUser}>Log In</button>
+          <button className="button-primary" onClick={this.logInUser}>Sign Up</button>
         </div>
       );
     }
