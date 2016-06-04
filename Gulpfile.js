@@ -36,7 +36,7 @@ function scripts() {
     .on('error', function(err) {
       console.log('Error with compiling components', err.message);
     })
-    .pipe(source('/client/bundle.js'))
+    .pipe(source('./client/bundle.js'))
     .pipe(gulp.dest('./'));
 }
 
