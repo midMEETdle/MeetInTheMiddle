@@ -1,5 +1,7 @@
 'use strict'
 
+const privateKeys = require('./../privateKeys.js');
+
 let dataHandler = {};
 
 dataHandler.parseInput = function (req, res, next) {

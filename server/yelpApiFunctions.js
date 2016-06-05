@@ -4,7 +4,7 @@ const oauthSignature = require('oauth-signature');
 const n = require('nonce')();
 const request = require('request');
 const qs = require('querystring');
-const privateKeys = require('./../privateKeys');
+const privateKeys = require('./../privateKeys.js');
 
 let yelpApiFunctions = {};
 
@@ -38,6 +38,7 @@ yelpApiFunctions.generateUrl = function(req, res, next) {
 };
 
 //queries yelp api for location data and slices 10 results
+//TODO: Modify API query to fallback to other types of search if no results
 yelpApiFunctions.queryLocationData = function(req, res, next) {
   request(req.body.requestUrl, function (error, response, body) {
     const data = JSON.parse(body);

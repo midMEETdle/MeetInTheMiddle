@@ -1,7 +1,7 @@
 'use strict'
 
 const request = require('request');
-const privateKeys = require('./../privateKeys');
+const privateKeys = require('./../privateKeys.js');
 
 let googleApiFunctions = {};
 

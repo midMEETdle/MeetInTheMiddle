@@ -4,7 +4,7 @@ const Sequelize = require('sequelize');
 const request = require('request');
 const bcrypt = require('bcryptjs');
 const SALT_VALUE = 10;
-const privateKeys = require('./../privateKeys');
+const privateKeys = require('./../privateKeys.js');
 
 //instantiates and logs in to the postgreSQL database on heroku
 const sequelize = new Sequelize(privateKeys.postgresURI, {
