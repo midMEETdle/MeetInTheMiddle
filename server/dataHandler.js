@@ -1,9 +1,11 @@
 'use strict'
 
+const privateKeys = require('./../privateKeys.js');
+
 let dataHandler = {};
 
 dataHandler.parseInput = function (req, res, next) {
-	const googleApiKey = 'AIzaSyB9KfyHTrjZoOk7EiRzRFGqYvruh4hm6iY';
+	const googleApiKey = privateKeys.googleApiKey;
 	let baseUrl = 'https://maps.googleapis.com/maps/api/geocode/json?address=';
 	let urlArray = [];
 
@@ -23,7 +25,7 @@ dataHandler.parseInput = function (req, res, next) {
 	}
 
 	req.body.inputUrlArray = urlArray;
-	next(); 
+	next();
 };
 
 dataHandler.sendOutput = function (req, res, next) {
@@ -36,25 +38,5 @@ dataHandler.sendOutput = function (req, res, next) {
 	}
 	res.send(outputObject);
 }
-
-// dataHandler.addDummyData = function (req, res, next) {
-// 	console.log('inside dummy data');
-// 	req.body = {};
-// 	req.body.inputArray = [ 
-// 		{
-// 			name: 'Matt',
-// 			street: '130 Gull Street,',
-// 			city: 'Manhattan Beach,',
-// 			state: ' CA',
-// 		},
-// 		{
-// 			name: 'Sandra',
-// 			street: '3415 McLaughlin Avenue,',
-// 			city: 'Los Angeles,',
-// 			state: ' CA',
-// 		}
-// 	];
-// 		next();
-// };
 
 module.exports = dataHandler;

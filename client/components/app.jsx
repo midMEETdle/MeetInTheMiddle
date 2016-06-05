@@ -139,7 +139,6 @@ var App = React.createClass({
     if (this.state.currentPage === 'resultsPage') {
       return (
         <div>
-          <p>Hi {this.state.firstName}!</p>
           <MapResults data={this.state.resultsData} />
           <ResultList data={this.state.resultsData} />
         </div>
