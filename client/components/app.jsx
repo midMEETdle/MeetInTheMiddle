@@ -15,7 +15,6 @@ var App = React.createClass({
       numberOfPeople: 2,
       currentPage: 'loginPage',
       resultsData: '',
-      firstName: '',
     });
   },
 
@@ -111,7 +110,6 @@ var App = React.createClass({
       success: function (response) {
         console.log('successful create user');
         this.setState({
-          firstName: response.firstname,
           currentPage: 'addressesPage',
         });
       }.bind(this),
