@@ -1,0 +1,3 @@
+{
+  presets: ["react","airbnb", "es2015"]
+}
