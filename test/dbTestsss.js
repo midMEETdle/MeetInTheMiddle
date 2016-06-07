@@ -3,6 +3,7 @@ const db = require('../db/database.js');
 const fs = require('fs');
 const path = require('path');
 const expect = require('chai').expect;
+const pg = require('pg-native')
 
 describe('database', function() {
   var db;
