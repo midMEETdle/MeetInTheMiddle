@@ -19,6 +19,13 @@ describe('React unit tests: AddressForm', () => {
 
   it('should have className cityName', function() {
     expect(mount(<AddressForm />).children().find('.cityName').length).to.equal(1);
-  })
+  });
+  //make an addressform tag, give it id props, then check if address form child
+  //has those same props
+
+  it('AddressForm component should have property id', function() {
+     const addressForm = mount(<AddressForm id={3} />);
+     expect(addressForm.prop('id')).to.equal(3);
+  });
 
 });
